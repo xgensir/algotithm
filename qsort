@@ -1,0 +1,57 @@
+class Mqsort
+{
+public:
+	void Qsort(int A[],int Left,int Right)
+	{
+		if((A==NULL)&&(Left>=Right))
+			return;
+		if(Left==Right-1)
+			{
+				if(A[Left]>A[Right])
+					Swap(&A[Left],&A[Right]);
+				return;
+			}
+		int index=Partition(A,Left,Right);
+		if(index>Left)
+			Qsort(A,Left,index-1);
+		if(index<Right)
+			Qsort(A,index+1,Right);
+	}
+	//分割函数
+	int Partition(int A[],int Left,int Right)
+	{
+		int last=Median3(A,Left,Right);
+		int i=Left;
+		int j=Right;
+		while(i<j)
+		{
+			while(A[++i]<last){};
+			while(A[--j]>last){};
+			if(i<j)
+				Swap(&A[i],&A[j]);
+			else
+				break;
+		}
+		Swap(&A[i],&A[Right]);
+		return i;
+	}
+	//三数中值
+	int Median3(int A[],int Left,int Right)
+	{
+		int Center=(Left+Right)/2;
+		if(A[Left]>A[Center])
+			Swap(&A[Left],&A[Center]);
+		if(A[Left]>A[Right])
+			Swap(&A[Left],&A[Right]);
+		if(A[Right]>A[Center])
+			Swap(&A[Right],&A[Center]);
+		//A[Left]<A[Right]<A[Center]
+		return A[Right];
+	}
+	void Swap(int *a,int *b)
+	{
+		int temp=*a;
+		*a=*b;
+		*b=temp;
+	}
+};
